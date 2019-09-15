@@ -1,0 +1,159 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Pretraga memoranduma</h4>
+                        <p class="card-category">*nije neophodno uneti sve kriterijume pretrage</p>
+                    </div>
+                    <div class="card-body">
+                        <form>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="ID" class="id" [(ngModel)]="id"
+                                            [ngModelOptions]="{standalone: true}" type="text">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Datum od" class="datumOd" [(ngModel)]="datumOd"
+                                            [ngModelOptions]="{standalone: true}" type="date">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Špediter" class="spediter"
+                                            [(ngModel)]="spediter.naziv" [ngModelOptions]="{standalone: true}"
+                                            type="text">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Status</mat-label>
+                                        <mat-select [(ngModel)]="status" [ngModelOptions]="{standalone: true}">
+                                            <mat-option *ngFor="let status of statusi" [value]="status">
+                                                {{status}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
+                                    <button mat-raised-button type="submit" (click)="searchMemorandum()"
+                                        class="btn btn-danger pull-right">
+                                        Pronađi memorandume</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header card-header-danger" style="color: #9c27b0">
+                                        <h4 class="card-title ">Lista memoranduma</h4>
+                                        <p class="card-category"></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class=" text-primary">
+                                                    <th>
+                                                        ID
+                                                    </th>
+                                                    <th>
+                                                        Datum od
+                                                    </th>
+                                                    <th>
+                                                        Špediter
+                                                    </th>
+                                                    <th>
+                                                        Status
+                                                    </th>
+                                                    <th>
+                                                    </th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let memorandum of memorandumi; let i = index"
+                                                        [attr.data-index]="i">
+                                                        <td>{{memorandum.memorandumID}}</td>
+                                                        <td>{{memorandum.datumOd | slice:0:10}}</td>
+                                                        <td>{{memorandum.spediter.naziv}}</td>
+                                                        <td>{{memorandum.status}}</td>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="false" (click)='onSelect($event, i)'>
+                                                                    <span class="form-check-sign">
+                                                                        <span class="check"></span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-left: 220px">
+                    <div class="col-md-2" style="padding-right: 60px ">
+                        <button mat-raised-button (click)="openUnosMemoranduma()" class="btn btn-danger pull-right"
+                            style="width: 130px">
+                            Unesi novi</button>
+                    </div>
+                    <div class="col-md-2" style="padding-right: 60px">
+                        <button mat-raised-button (click)="openPrikazMemoranduma()" class="btn btn-danger pull-right"
+                            style="width: 130px">
+                            Prikaži</button>
+                    </div>
+                    <div class="col-md-2" style="padding-right: 60px">
+                        <button mat-raised-button (click)="openIzmenaMemoranduma()" class="btn btn-danger pull-right"
+                            style="width: 130px">
+                            Izmeni</button>
+                    </div>
+                    <div class="col-md-2" style="padding-right: 60px">
+                        <button mat-raised-button type="submit" (click)="zakljuciMemorandum()"
+                            class="btn btn-danger pull-right" style="width: 130px">
+                            Zaključi</button>
+                    </div>
+                    <div class="col-md-2" style="padding-right: 60px">
+                        <button mat-raised-button type="submit" (click)="deleteMemorandum()"
+                            class="btn btn-danger pull-right" style="width: 130px">
+                            Obriši</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="unosMemorandumaBOOL">
+            <app-unos-memoranduma [memorandumi]="memorandumi" (updateMemorandumi)="newMemorandumi($event)">
+            </app-unos-memoranduma>
+        </div>
+        <div *ngIf="prikazMemorandumaBOOL">
+            <app-prikaz-memoranduma [checkedMemorandum]="checkedMemorandum"></app-prikaz-memoranduma>
+        </div>
+        <div *ngIf="izmenaMemorandumaBOOL">
+            <app-izmena-memoranduma [checkedMemorandum]="checkedMemorandum" [memorandumi]="memorandumi"
+                (updateMemorandumi)="newMemorandumi($event)"></app-izmena-memoranduma>
+        </div>
+    </div>
+</div>

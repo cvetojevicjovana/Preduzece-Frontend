@@ -1,0 +1,151 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Pretraga špeditera</h4>
+                        <p class="card-category">*nije neophodno uneti sve kriterijume pretrage</p>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="ID" class="id" [(ngModel)]="id"
+                                            [ngModelOptions]="{standalone: true}" type="text">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Naziv" class="naziv" [(ngModel)]="naziv"
+                                            [ngModelOptions]="{standalone: true}" type="text">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Adresa" class="adresa" [(ngModel)]="adresa"
+                                            [ngModelOptions]="{standalone: true}" type="text">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Telefon" class="telefon" [(ngModel)]="telefon"
+                                            [ngModelOptions]="{standalone: true}" type="text">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="PIB" class="pib" [(ngModel)]="pib"
+                                            [ngModelOptions]="{standalone: true}" type="text">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <button mat-raised-button type="submit" (click)="searchSpediteri()"
+                                        class="btn btn-danger pull-right">
+                                        Pronađi špeditere</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header card-header-danger" style="color: #9c27b0">
+                                        <h4 class="card-title ">Lista špeditera</h4>
+                                        <p class="card-category"></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class=" text-primary">
+                                                    <th>
+                                                        ID
+                                                    </th>
+                                                    <th>
+                                                        Naziv
+                                                    </th>
+                                                    <th>
+                                                        Adresa
+                                                    </th>
+                                                    <th>
+                                                        PIB
+                                                    </th>
+                                                    <th>
+                                                        Telefon
+                                                    </th>
+
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let spediter of spediteri; let i = index"
+                                                        [attr.data-index]="i">
+                                                        <td>{{spediter.spediterID}}</td>
+                                                        <td>{{spediter.naziv}}</td>
+                                                        <td>{{spediter.adresa}}</td>
+                                                        <td>{{spediter.pib}}</td>
+                                                        <td>{{spediter.telefon}}</td>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="false" (click)='onSelect($event, i)'>
+                                                                    <span class="form-check-sign">
+                                                                        <span class="check"></span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-right: 50px">
+                    <div class="col-md-3">
+                        <button mat-raised-button (click)="openUnosSpeditera()" class="btn btn-danger pull-right"
+                            style="width: 180px">
+                            Unesi novi</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button mat-raised-button (click)="openPrikazSpeditera()" class="btn btn-danger pull-right"
+                            style="width: 180px">
+                            Prikaži</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button mat-raised-button (click)="openIzmenaSpeditera()" class="btn btn-danger pull-right"
+                            style="width: 180px">
+                            Izmeni</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button mat-raised-button (click)="deleteSpediter()" class="btn btn-danger pull-right"
+                            style="width: 180px">
+                            Obriši</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div *ngIf="openUnosSpediteraBOOL">
+            <app-unos-speditera [spediteri]="spediteri" (updateSpediteri)="newSpediteri($event)"></app-unos-speditera>
+        </div>
+        <div *ngIf="openPrikazSpediteraBOOL">
+            <app-prikaz-speditera [checkedSpediter]="checkedSpediter"></app-prikaz-speditera>
+        </div>
+        <div *ngIf="openIzmenaSpediteraBOOL">
+            <app-izmena-speditera [checkedSpediter]="checkedSpediter" [spediteri]="spediteri"
+                (updateSpediteri)="newSpediteri($event)"></app-izmena-speditera>
+        </div>
+    </div>
+</div>

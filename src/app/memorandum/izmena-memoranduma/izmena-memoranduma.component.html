@@ -1,0 +1,189 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Izmena memoranduma</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="ID" [(ngModel)]="checkedMemorandum.memorandumID"
+                                            [ngModelOptions]="{standalone: true}" disabled>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Špediteri</mat-label>
+                                        <mat-select [(ngModel)]="checkedMemorandum.spediter.naziv"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-option *ngFor="let spediter of spediteri" [value]="spediter.naziv"
+                                                (click)="postaviSpeditera(spediter)">
+                                                {{spediter.naziv}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Datum od" [(ngModel)]="checkedMemorandum.datumOd"
+                                            [ngModelOptions]="{standalone: true}" type="date">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Datum do" [(ngModel)]="checkedMemorandum.datumDo"
+                                            [ngModelOptions]="{standalone: true}" type="date">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header card-header-danger">
+                            <h4 class="card-title">Podaci o špediteru</h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Naziv" class="naziv"
+                                                [(ngModel)]="checkedMemorandum.spediter.naziv"
+                                                [ngModelOptions]="{standalone: true}" disabled>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Adresa"
+                                                [(ngModel)]="checkedMemorandum.spediter.adresa"
+                                                [ngModelOptions]="{standalone: true}" disabled>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Telefon"
+                                                [(ngModel)]="checkedMemorandum.spediter.telefon"
+                                                [ngModelOptions]="{standalone: true}" disabled>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-vrste-ovlascenja [vrsteOvlascenja]="vrsteOvlascenja"
+            (checkedVrstaOvlascenja)=cekiranaVrstaOvlascenja($event)></app-vrste-ovlascenja>
+        <div class="row">
+            <div class="col-md-8" style="padding-left: 70px">
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Napomena" [(ngModel)]="napomena" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+
+                <button mat-raised-button type="submit" (click)="dodajOdabranuStavku()"
+                    class="btn btn-danger pull-right">Dodaj ovlašćenje</button>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-danger" style="color: #9c27b0">
+                                <h4 class="card-title ">Stavke memoranduma</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class=" text-primary">
+                                            <th>
+                                                Redni broj
+                                            </th>
+                                            <th>
+                                                Ovlascenje
+                                            </th>
+                                            <th>
+                                                Napomena
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let stavka of checkedMemorandum.stavkeMemoranduma; let i = index"
+                                                [attr.data-index]="i">
+                                                <td>{{stavka.redniBroj.redniBroj}}</td>
+                                                <td>{{stavka.vrstaOvlascenja.opis}}</td>
+                                                <td>{{stavka.napomena}}</td>
+                                                <td>
+                                                    <button mat-raised-button type="button"
+                                                        (click)="obrisiOdabranuStavku(stavka)" matTooltip="Obriši"
+                                                        [matTooltipPosition]="'above'"
+                                                        class="btn btn-danger btn-sm btn-just-icon">
+                                                        <i class="material-icons">close</i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <br>
+            </div>
+            <div class="row" style="padding-right: 45px ">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12" style="padding-left: 70px">
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Status" [(ngModel)]="checkedMemorandum.status"
+                                    [ngModelOptions]="{standalone: true}" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <br>
+                </div>
+                <div class="col-md-4">
+
+                    <button mat-raised-button type="submit" (click)="sacuvajZakljuciMemorandum()"
+                        class="btn btn-danger pull-right" style="width: 280px">Sačuvaj i
+                        zaključi</button>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-4">
+
+                    <button mat-raised-button type="submit" (click)="sacuvajMemorandum()"
+                        class="btn btn-danger pull-right" style="width: 280px">Sačuvaj</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
